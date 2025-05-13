@@ -1,4 +1,4 @@
-#import "../swiss-qr-bill.typ": swiss_qr_bill
+#import "../payqr-swiss.typ": swiss_qr_bill
 
 // Example 1: Basic QR bill with QR-IBAN
 #page[
