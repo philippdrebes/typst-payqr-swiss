@@ -170,6 +170,10 @@ The default language is German ("de") if not specified.
 )
 ```
 
+## Changelog
+
+See the [Changelog](CHANGELOG.md) for release notes for each version.
+
 ## Disclaimer
 
 This package is provided "as is", without warranty of any kind. It is not affiliated with, endorsed by, or connected to SIX Interbank Clearing Ltd or any financial institution. Users of this package are responsible for ensuring that the generated QR bills conform to their specific requirements and the latest standards published by SIX Interbank Clearing Ltd.
