@@ -50,6 +50,27 @@ Add this package to your Typst project:
 
 ![Example Swiss QR Bill](./examples/example.png)
 
+## Language Support
+
+This package supports all Swiss national languages incl. English as specified in the official Swiss QR Bill specification:
+
+- German (de)
+- French (fr)
+- Italian (it)
+- English (en)
+
+You can specify your preferred language using the `language` parameter:
+
+```typst
+#swiss-qr-bill(
+  language: "fr",  // Options: "de", "fr", "it", "en"
+  account: "CH4431999123000889012",
+  // ... other parameters
+)
+```
+
+The default language is German ("de") if not specified.
+
 ## Parameters
 
 | Parameter              | Description                                      | Required    |
@@ -73,6 +94,7 @@ Add this package to your Typst project:
 | `reference`            | Payment reference                                | Depends\*\* |
 | `additional-info`      | Additional information for the invoice recipient | No          |
 | `billing-info`         | Structured billing information                   | No          |
+| `language`             | Language code (de, fr, it, en)                   | No (de)     |
 
 \* Required if debtor information is provided  
 \*\* Required for QRR and SCOR reference types, must be omitted for NON

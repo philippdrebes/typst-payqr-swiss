@@ -1,5 +1,60 @@
 #import "@preview/tiaoma:0.3.0": qrcode
 
+#let languages = (
+  de: (
+    payment-part: "Zahlteil",
+    receipt: "Empfangsschein",
+    account-payable-to: "Konto / Zahlbar an",
+    reference: "Referenz",
+    additional-information: "Zusätzliche Informationen",
+    payable-by: "Zahlbar durch",
+    payable-by-name-address: "Zahlbar durch (Name/Adresse)",
+    currency: "Währung",
+    amount: "Betrag",
+    acceptance-point: "Annahmestelle",
+    separate-before-paying: "Vor der Einzahlung abzutrennen"
+  ),
+  fr: (
+    payment-part: "Section paiement",
+    receipt: "Récépissé",
+    account-payable-to: "Compte / Payable à",
+    reference: "Référence",
+    additional-information: "Informations supplémentaires",
+    payable-by: "Payable par",
+    payable-by-name-address: "Payable par (nom/adresse)",
+    currency: "Monnaie",
+    amount: "Montant",
+    acceptance-point: "Point de dépôt",
+    separate-before-paying: "A détacher avant le versement"
+  ),
+  it: (
+    payment-part: "Sezione pagamento",
+    receipt: "Ricevuta",
+    account-payable-to: "Conto / Pagabile a",
+    reference: "Riferimento",
+    additional-information: "Informazioni supplementari",
+    payable-by: "Pagabile da",
+    payable-by-name-address: "Pagabile da (nome/indirizzo)",
+    currency: "Valuta",
+    amount: "Importo",
+    acceptance-point: "Punto di accettazione",
+    separate-before-paying: "Da staccare prima del versamento"
+  ),
+  en: (
+    payment-part: "Payment part",
+    receipt: "Receipt",
+    account-payable-to: "Account / Payable to",
+    reference: "Reference",
+    additional-information: "Additional information",
+    payable-by: "Payable by",
+    payable-by-name-address: "Payable by (name/address)",
+    currency: "Currency",
+    amount: "Amount",
+    acceptance-point: "Acceptance point",
+    separate-before-paying: "Separate before paying in"
+  )
+)
+
 #let format-currency(number, separator: " ") = {
   let precision = 2
   
@@ -49,8 +104,11 @@
   reference-type: "NON",  // QRR, SCOR, or NON
   reference: none,
   additional-info: none,
-  billing-info: none
+  billing-info: none,
+  language: "de"  // de, fr, it, or en
 ) = {
+  let lang = languages.at(language, default: languages.en)
+  
   // QR code data according to Swiss QR bill standard
   // QR Type + Version + Coding Type + IBAN/QR-IBAN
   let qr-data = "SPC\n" + "0200\n" + "1\n" + account + "\n" 
@@ -79,7 +137,16 @@
   // Additional information, Trailer, and Billing information
   qr-data += additional-info + "\n" + "EPD\n" + billing-info
   
-  set text(font: "Helvetica", size: 10pt)
+  let font-stack = (
+    "Helvetica", 
+    "Arial", 
+    "Liberation Sans", 
+    "Nimbus Sans L", 
+    "Roboto", 
+    "sans-serif"
+  )
+  
+  set text(font: font-stack, size: 10pt)
   set page(paper: "a4", margin: 0cm)
   
   place(
@@ -94,8 +161,8 @@
         top + center,
         dx: -10mm,
         dy: -1.75mm,
-        text(font: "Zapf Dingbats", size: 12pt)[✂]
-         )
+        text(font: ("Zapf Dingbats", "DejaVu Sans", "Segoe UI Symbol", "Arial Unicode MS"), size: 12pt)[✂]
+      )
 
       #place(
         top + center,
@@ -122,7 +189,7 @@
         top,
         dy: 12mm,
         dx: 60.1mm,
-        rotate(90deg)[#text(font: "Zapf Dingbats", size: 12pt)[✂]]
+        rotate(90deg)[#text(font: ("Zapf Dingbats", "DejaVu Sans", "Segoe UI Symbol", "Arial Unicode MS"), size: 12pt)[✂]]
       )
       
       // Receipt (left side)
@@ -133,10 +200,10 @@
         block(
           width: 62mm,
           [
-            #text(weight: "bold", size: 11pt)[Empfangsschein]
+            #text(weight: "bold", size: 11pt)[#lang.receipt]
             
             #v(3mm)
-            #text(weight: "bold", size: 6pt)[Konto / Zahlbar an]
+            #text(weight: "bold", size: 6pt)[#lang.account-payable-to]
             #linebreak()
             #text(size: 8pt)[#account]
             #linebreak()
@@ -148,13 +215,13 @@
             
             #if reference != none {
               v(3mm)
-              text(weight: "bold", size: 6pt)[Reference]
+              text(weight: "bold", size: 6pt)[#lang.reference]
               linebreak()
               text(size: 8pt)[#reference]
             }
             
             #v(3mm)
-            #text(weight: "bold", size: 6pt)[Zahlbar durch (Name/Adresse)]
+            #text(weight: "bold", size: 6pt)[#lang.payable-by-name-address]
             #linebreak()
             #text(size: 8pt)[#debtor-name]
             #linebreak()
@@ -166,8 +233,8 @@
             #grid(
               columns: (20mm,) * 2,
               rows: 5mm,
-              text(weight: "bold", size: 6pt)[Währung],
-              text(weight: "bold", size: 6pt)[Betrag],
+              text(weight: "bold", size: 6pt)[#lang.currency],
+              text(weight: "bold", size: 6pt)[#lang.amount],
               text(size: 8pt)[#currency],
               text(size: 8pt)[#format-currency(amount)]
             )
@@ -176,7 +243,7 @@
             #place(
               right,
               dx: -8mm,
-              text(weight: "bold", size: 6pt)[Annahmestelle]
+              text(weight: "bold", size: 6pt)[#lang.acceptance-point]
             )
           ]
         )
@@ -204,7 +271,7 @@
                   align(left)[
                     #stack(
                       dir: ttb,
-                      text(weight: "bold", size: 11pt)[Zahlteil],
+                      text(weight: "bold", size: 11pt)[#lang.payment-part],
                       v(5mm),
                       qrcode(qr-data, options: ( option-1: 2 ), width: 46mm, height: 46mm),
                       // Swiss cross in the center
@@ -222,8 +289,8 @@
                       grid(
                         columns: (20mm,) * 2,
                         rows: 5mm,
-                        text(weight: "bold", size: 8pt)[Währung],
-                        text(weight: "bold", size: 8pt)[Betrag],
+                        text(weight: "bold", size: 8pt)[#lang.currency],
+                        text(weight: "bold", size: 8pt)[#lang.amount],
                         text(size: 10pt)[#currency],
                         text(size: 10pt)[#format-currency(amount)]
                       )
@@ -236,7 +303,7 @@
               block(
                 width: 100%,
                 [
-                  #text(weight: "bold", size: 8pt)[Konto / Zahlbar an]
+                  #text(weight: "bold", size: 8pt)[#lang.account-payable-to]
                   #linebreak()
                   #text(size: 10pt)[#account]
                   #linebreak()
@@ -248,20 +315,20 @@
                   
                   #if reference != none {
                     v(3mm)
-                    text(weight: "bold", size: 8pt)[Referenz]
+                    text(weight: "bold", size: 8pt)[#lang.reference]
                     linebreak()
                     text(size: 9pt)[#reference]
                   }
                    
                   #if additional-info != none {
                     v(3mm)
-                    text(weight: "bold", size: 8pt)[Zusätzliche Informationen]
+                    text(weight: "bold", size: 8pt)[#lang.additional-information]
                     linebreak()
                     text(size: 10pt)[#additional-info]
                   }
                   
                   #v(3mm)
-                  #text(weight: "bold", size: 8pt)[Zahlbar durch (Name/Adresse)]
+                  #text(weight: "bold", size: 8pt)[#lang.payable-by-name-address]
                   #linebreak()
                   #text(size: 10pt)[#debtor-name]
                   #linebreak()
