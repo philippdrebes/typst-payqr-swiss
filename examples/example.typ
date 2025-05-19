@@ -1,5 +1,4 @@
-// #import "@preview/payqr-swiss:0.2.0": swiss-qr-bill
-#import "../payqr-swiss.typ": swiss-qr-bill
+#import "@preview/payqr-swiss:0.2.0": swiss-qr-bill
 
 #set page(paper: "a4")
 
