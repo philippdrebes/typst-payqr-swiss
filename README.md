@@ -95,6 +95,7 @@ The default language is German ("de") if not specified.
 | `additional-info`      | Additional information for the invoice recipient | No          |
 | `billing-info`         | Structured billing information                   | No          |
 | `language`             | Language code (de, fr, it, en)                   | No (de)     |
+| `standalone`           | Layout mode (false: floating, true: new page)    | No (false)  |
 
 \* Required if debtor information is provided  
 \*\* Required for QRR and SCOR reference types, must be omitted for NON
@@ -103,6 +104,25 @@ The default language is German ("de") if not specified.
 
 - When using a QR-IBAN, you must use reference type `QRR` with a valid QR reference (27 characters)
 - When using a regular IBAN, you must use either `SCOR` with a valid Creditor Reference (ISO 11649) or `NON` with no reference
+
+## Layout Modes
+
+The QR bill generator supports two layout modes controlled by the `standalone` parameter:
+
+### Floating Mode (default: `standalone: false`)
+
+- QR bill becomes a floating element with fixed Swiss standard dimensions (210mm width, 105mm height)
+- You control positioning using Typst's `place()`, `align()`, or other layout functions
+- Full control over where and how the QR bill appears on your page
+- Perfect for invoices with company headers, custom layouts, and precise positioning
+
+**Note on Typst's `float` parameter**: When using `#place()` to position the QR bill, avoid using `float: true` as it may force the QR bill to a new page even when there's sufficient space. This happens because the QR bill has a large fixed height (105mm), and Typst's float system seems to be conservative with large elements. Use `#place()` without the `float` parameter for better control over positioning.
+
+### Standalone Mode (`standalone: true`)
+
+- Forces a new page with specific page settings (A4, no margins)
+- QR bill is placed at the bottom of the page
+- Ideal for standalone QR bills or when you don't need custom page content
 
 ## Examples
 
@@ -167,6 +187,67 @@ The default language is German ("de") if not specified.
   creditor-country: "CH",
   currency: "CHF",
   reference-type: "NON"
+)
+```
+
+### Example 4: Floating QR bill positioned at page bottom (default)
+
+```typst
+#set page(paper: "a4", margin: 2.5cm)
+
+// Your invoice content here...
+#text(size: 18pt, weight: "bold")[TechConsult AG - Invoice]
+// ... invoice details, tables, etc ...
+
+// Position floating QR bill at bottom, extending to paper edges
+#place(
+  bottom,
+  dx: -2.5cm,  // Extend beyond left margin
+  dy: 2.5cm,   // Extend beyond bottom margin
+  swiss-qr-bill(
+    // floating is the default behavior
+    account: "CH4431999123000889012",
+    creditor-name: "TechConsult AG",
+    // ... other parameters
+  )
+)
+```
+
+### Example 5: Centered floating QR bill
+
+```typst
+#set page(margin: 2cm)
+
+// Invoice content
+#text(size: 16pt)[Simple Invoice]
+#table(
+  columns: (1fr, auto),
+  [Service], [CHF 500.00],
+  [*Total*], [*CHF 500.00*]
+)
+
+// Center the QR bill on the page
+#align(center)[
+  #swiss-qr-bill(
+    // floating is the default behavior
+    account: "CH5800791123000889012",
+    creditor-name: "Freelancer Name",
+    amount: 500.00,
+    currency: "CHF",
+    reference-type: "NON"
+  )
+]
+```
+
+### Example 6: Standalone QR bill (forces new page)
+
+```typst
+// Traditional standalone QR bill
+#swiss-qr-bill(
+  standalone: true,  // Force new page
+  account: "CH4431999123000889012",
+  creditor-name: "Donation Foundation",
+  // ... parameters
 )
 ```
 

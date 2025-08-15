@@ -105,7 +105,8 @@
   reference: none,
   additional-info: none,
   billing-info: none,
-  language: "de"  // de, fr, it, or en
+  language: "de",  // de, fr, it, or en
+  standalone: false  // false: floating element (default), true: force new page
 ) = {
   let lang = languages.at(language, default: languages.en)
   
@@ -146,14 +147,10 @@
     "sans-serif"
   )
   
-  set text(font: font-stack, size: 10pt)
-  set page(paper: "a4", margin: 0cm)
-  
-  place(
-    bottom + center,
-    [
+  let qr-bill-content = [
     #box(
-    width: 100%,
+    // fixed Swiss standard dimensions
+    width: 210mm,
     height: 105mm,
     [
       // Horizontal dotted line
@@ -343,5 +340,21 @@
       )
     ]
   )
-  ])
+  ]
+  
+  if standalone {
+    // Standalone mode: force new page
+    set text(font: font-stack, size: 10pt)
+    set page(paper: "a4", margin: 0cm)
+    
+    place(
+      bottom + center,
+      qr-bill-content
+    )
+  } else {
+    // Return QR bill as floating content block
+    set text(font: font-stack, size: 10pt)
+    
+    qr-bill-content
+  }
 }
