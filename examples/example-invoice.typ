@@ -1,4 +1,4 @@
-#import "@preview/payqr-swiss:0.3.0": swiss-qr-bill
+#import "@preview/payqr-swiss:0.4.0": swiss-qr-bill
 
 #set page(paper: "a4", margin: 2cm)
 #set text(font: "Helvetica", size: 11pt)

@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.4.0 (2025-09-20)
+
+### Added
+
+- Blank fields
+- Error handling for invalid amount, IBAN and currencies
+
+### Changed
+
+- Correct reference and IBAN formatting
+- CH cross is now exactly 7mm x 7mm
+- Fixed different headings when debtor is provided or not
+- Tweaking margins and paddings to match the standard more (line spacings, content position, etc.)
+
 ## v0.3.0 (2025-08-15)
 
 ### BREAKING CHANGES
