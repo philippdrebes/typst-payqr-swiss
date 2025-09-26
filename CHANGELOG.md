@@ -1,11 +1,14 @@
 # Changelog
 
-## v0.4.0 (2025-09-20)
+## v0.4.0 (2025-09-27)
 
 ### Added
 
 - Blank fields
 - Error handling for invalid amount, IBAN and currencies
+- Font selection parameter: New `font` parameter allows using page font or selecting one of the spec-compliant fonts
+  - Supports string values for single font or array of strings for font stack
+  - Maintains backward compatibility (defaults to `"auto"` with existing behavior)
 
 ### Changed
 
