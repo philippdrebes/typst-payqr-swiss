@@ -96,6 +96,7 @@ The default language is German ("de") if not specified.
 | `billing-info`         | Structured billing information                   | No          |
 | `language`             | Language code (de, fr, it, en)                   | No (de)     |
 | `standalone`           | Layout mode (false: floating, true: new page)    | No (false)  |
+| `font`                 | Font configuration (auto, page, or font name)    | No (auto)   |
 
 \* Required if debtor information is provided  
 \*\* Required for QRR and SCOR reference types, must be omitted for NON
@@ -123,6 +124,24 @@ The QR bill generator supports two layout modes controlled by the `standalone` p
 - Forces a new page with specific page settings (A4, no margins)
 - QR bill is placed at the bottom of the page
 - Ideal for standalone QR bills or when you don't need custom page content
+
+## Font Configuration
+
+The QR bill generator provides flexible font configuration through the `font` parameter to ensure compliance with Swiss QR bill specifications while allowing customization:
+
+### Font Options
+
+- **`"auto"` (default)**: Uses spec-compliant fonts in this order of availability (Helvetica, Frutiger, Arial, Liberation Sans)
+- **`"page"`**: Inherits the font from your page context
+- **Specific font**: Specify a particular compliant font (e.g., "Arial", "Helvetica")
+
+### Font Compliance
+
+By default, the generator uses fonts that comply with Swiss QR bill specifications. When you specify a non-compliant font, you'll receive a compile-time warning but the QR bill will still render.
+
+**Spec-compliant fonts**: Arial, Frutiger, Helvetica, Liberation Sans
+
+**Note**: When using `font: "page"`, you're responsible for ensuring the chosen font meets Swiss QR bill compliance requirements for official use.
 
 ## Examples
 

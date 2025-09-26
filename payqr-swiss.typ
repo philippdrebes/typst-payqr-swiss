@@ -156,7 +156,8 @@
   additional-info: none,
   billing-info: none,
   language: "de",  // de, fr, it, or en
-  standalone: false  // false: floating element (default), true: force new page
+  standalone: false,  // false: floating element (default), true: force new page
+  font: "auto"  // "auto": use spec-compliant fonts, "page": inherit from page, or specify font name
 ) = {
   // If amount = 0 then it's a bill with a blank field for the amount
   if (amount < 0.01 or amount > 999999999.99) and amount != 0 {
@@ -174,7 +175,31 @@
   }
 
   let lang = languages.at(language, default: languages.en)
-  
+
+  let compliant-fonts = (
+     "arial", "frutiger", "helvetica", "liberation sans"
+  )
+
+  let font-to-use = if font == "auto" {
+    // Default spec-compliant font stack
+    ("Helvetica", "Frutiger", "Arial", "Liberation Sans")
+  } else if font == "page" {
+    // Don't set font, inherit from page context
+    none
+  } else {
+    // User-specified font - check compliance
+    // When Typst gets a function to generate compiler warnings, we can use it here to inform the user of non-compliance
+    
+    // let font-names = if type(font) == array { font } else { (font,) }
+    // let non-compliant = font-names.filter(f => not compliant-fonts.contains(lower(f)))
+    //
+    // if non-compliant.len() > 0 {
+    //   panic("Warning: Font(s) '" + non-compliant.join(", ") + "' may not be compliant with Swiss QR bill specifications. Consider using: Arial, Frutiger, Helvetica or Liberation Sans.")
+    // }
+
+    font
+  }
+
   // QR code data according to Swiss QR bill standard
   // QR Type + Version + Coding Type + IBAN/QR-IBAN
   let qr-data = "SPC\n" + "0200\n" + "1\n" + accountWithoutSpaces + "\n" 
@@ -202,15 +227,6 @@
   
   // Additional information, Trailer, and Billing information
   qr-data += additional-info + "\n" + "EPD\n" + billing-info
-  
-  let font-stack = (
-    "Helvetica", 
-    "Arial", 
-    "Liberation Sans", 
-    "Nimbus Sans L", 
-    "Roboto", 
-    "sans-serif"
-  )
   
   let qr-bill-content = [
     #box(
@@ -460,17 +476,26 @@
   
   if standalone {
     // Standalone mode: force new page
-    set text(font: font-stack, size: 10pt)
     set page(paper: "a4", margin: 0cm)
-    
+    if font-to-use != none {
+      set text(font: font-to-use, size: 10pt)
+    } else {
+      set text(size: 10pt)
+    }
+
     place(
       bottom + center,
       qr-bill-content
     )
   } else {
     // Return QR bill as floating content block
-    set text(font: font-stack, size: 10pt)
-    
-    qr-bill-content
+    if font-to-use != none {
+      set text(font: font-to-use, size: 10pt)
+      qr-bill-content
+    } else {
+      // Don't set font, inherit from page context
+      set text(size: 10pt)
+      qr-bill-content
+    }
   }
 }
