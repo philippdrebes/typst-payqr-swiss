@@ -274,7 +274,11 @@
             #linebreak()
             #text(size: 8pt)[#creditor-street #creditor-building]
             #linebreak()
-            #text(size: 8pt)[#creditor-postal-code #creditor-city]
+            if creditor-country != "CH" {
+              text(size: 8pt)[#creditor-country - #creditor-postal-code #creditor-city]
+            } else {
+              text(size: 8pt)[#creditor-postal-code #creditor-city]
+            }
             
             #if reference != none {
               text(weight: "bold", size: 6pt)[#lang.reference]
@@ -284,7 +288,7 @@
             
             
             #if debtor-name != "" {
-              text(weight: "bold", size: 6pt)[#lang.payable-by-name-address]
+              text(weight: "bold", size: 6pt)[#lang.payable-by]
               linebreak()
               text(size: 8pt)[#debtor-name]
               linebreak()
@@ -409,7 +413,11 @@
                   #linebreak()
                   #text(size: 10pt)[#creditor-street #creditor-building]
                   #linebreak()
-                  #text(size: 10pt)[#creditor-postal-code #creditor-city]
+                  if creditor-country != "CH" {
+                    text(size: 10pt)[#creditor-country - #creditor-postal-code #creditor-city]
+                  } else {
+                    text(size: 10pt)[#creditor-postal-code #creditor-city]
+                  }
                   
                   #if reference != none {
                     text(weight: "bold", size: 8pt)[#lang.reference]
@@ -430,7 +438,11 @@
                     linebreak()
                     text(size: 10pt)[#debtor-street #debtor-building]
                     linebreak()
-                    text(size: 10pt)[#debtor-postal-code #debtor-city]
+                    if debtor-country != "CH" {
+                      text(size: 10pt)[#debtor-country - #debtor-postal-code #debtor-city]
+                    } else {
+                      text(size: 10pt)[#debtor-postal-code #debtor-city]
+                    }
                   } else {
                     text(weight: "bold", size: 8pt)[#lang.payable-by-name-address]
                     v(-3mm)
