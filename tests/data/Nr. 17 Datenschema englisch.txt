@@ -1,0 +1,31 @@
+SPC
+0200
+1
+CH5800791123000889012
+S
+Health insurance fit&kicking
+Am Wasser
+1
+3000
+Bern
+CH
+
+
+
+
+
+
+
+211.00
+CHF
+S
+Sarah Beispiel
+Mustergasse
+1
+3600
+Thun
+CH
+SCOR
+RF240191230100405JSH0438
+Premium calculation July 2020
+EPD
