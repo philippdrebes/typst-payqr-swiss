@@ -16,13 +16,13 @@ This package provides a simple way to generate Swiss QR bills in [Typst](https:/
 Add this package to your Typst project:
 
 ```
-#import "@preview/payqr-swiss:0.3.0": swiss-qr-bill
+#import "@preview/payqr-swiss:0.4.0": swiss-qr-bill
 ```
 
 ## Usage
 
 ```typst
-#import "@preview/payqr-swiss:0.3.0": swiss-qr-bill
+#import "@preview/payqr-swiss:0.4.0": swiss-qr-bill
 
 #swiss-qr-bill(
   account: "CH4431999123000889012",
