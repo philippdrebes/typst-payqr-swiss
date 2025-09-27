@@ -290,7 +290,7 @@
             #linebreak()
             #text(size: 8pt)[#creditor-street #creditor-building]
             #linebreak()
-            if creditor-country != "CH" {
+            #if creditor-country != "CH" {
               text(size: 8pt)[#creditor-country - #creditor-postal-code #creditor-city]
             } else {
               text(size: 8pt)[#creditor-postal-code #creditor-city]
@@ -429,7 +429,7 @@
                   #linebreak()
                   #text(size: 10pt)[#creditor-street #creditor-building]
                   #linebreak()
-                  if creditor-country != "CH" {
+                  #if creditor-country != "CH" {
                     text(size: 10pt)[#creditor-country - #creditor-postal-code #creditor-city]
                   } else {
                     text(size: 10pt)[#creditor-postal-code #creditor-city]
