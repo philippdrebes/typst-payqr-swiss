@@ -54,7 +54,7 @@
     separate-before-paying: "Separate before paying in"
   )
 )
-
+#let scissors = image("./assets/scissors.svg", width: 1em )
 #let format-currency(number, separator: " ") = {
   let precision = 2
   
@@ -239,7 +239,7 @@
         top + center,
         dx: -10mm,
         dy: -1.75mm,
-        text(font: ("Zapf Dingbats", "DejaVu Sans", "Segoe UI Symbol", "Arial Unicode MS"), size: 12pt)[✂]
+        rotate(90deg, scissors)
       )
 
       #place(
@@ -267,7 +267,7 @@
         top,
         dy: 12mm,
         dx: 60.1mm,
-        rotate(90deg)[#text(font: ("Zapf Dingbats", "DejaVu Sans", "Segoe UI Symbol", "Arial Unicode MS"), size: 12pt)[✂]]
+        scissors
       )
       
       // Receipt (left side)
