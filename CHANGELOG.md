@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1 (2025-11-23)
+
+### Changed
+
+- Replaced dingbat font scissors symbol with official SVG icon from SIX
+
 ## v0.4.0 (2025-09-27)
 
 ### Added
