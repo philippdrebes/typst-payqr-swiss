@@ -236,10 +236,10 @@
     [
       // Horizontal dotted line
       #place(
-        top + center,
-        dx: -10mm,
-        dy: -1.75mm,
-        rotate(90deg, scissors)
+        top + left,
+        dx: 5mm,
+        dy: -1.03mm,
+        scissors
       )
 
       #place(
@@ -265,9 +265,9 @@
 
       #place(
         top,
-        dy: 12mm,
-        dx: 60.1mm,
-        scissors
+        dy: 5mm,
+        dx: 60.23mm,
+        rotate(90deg, scissors)
       )
       
       // Receipt (left side)
