@@ -155,10 +155,10 @@
   reference: none,
   additional-info: none,
   billing-info: none,
-  language: "de",  // de, fr, it, or en
+  language: auto,  // auto (use text.lang with fallback to en), de, fr, it, or en
   standalone: false,  // false: floating element (default), true: force new page
   font: "auto"  // "auto": use spec-compliant fonts, "page": inherit from page, or specify font name
-) = {
+) = context {
   // If amount = 0 then it's a bill with a blank field for the amount
   if (amount < 0.01 or amount > 999999999.99) and amount != 0 {
     panic("Amount must be between 0.01 and 999999999.99")
@@ -174,7 +174,7 @@
     panic("Currency must be either CHF or EUR")
   }
 
-  let lang = languages.at(language, default: languages.en)
+  let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.en)
 
   let compliant-fonts = (
      "arial", "frutiger", "helvetica", "liberation sans"
