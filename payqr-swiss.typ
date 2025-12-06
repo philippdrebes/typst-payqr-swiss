@@ -174,7 +174,7 @@
     panic("Currency must be either CHF or EUR")
   }
 
-  let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.en)
+  let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.de)
 
   let compliant-fonts = (
      "arial", "frutiger", "helvetica", "liberation sans"
