@@ -63,13 +63,13 @@ You can specify your preferred language using the `language` parameter:
 
 ```typst
 #swiss-qr-bill(
-  language: "fr",  // Options: "de", "fr", "it", "en"
+  language: "fr",  // Options: auto, "de", "fr", "it", "en"
   account: "CH4431999123000889012",
   // ... other parameters
 )
 ```
 
-The default language is German ("de") if not specified.
+The default language is the current text language (via `#set text(lang: "..."` and parameter `..., language: auto,...`) and defaults to German if the text language is invalid!
 
 ## Parameters
 
