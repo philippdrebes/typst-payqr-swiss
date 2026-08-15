@@ -54,7 +54,7 @@
     separate-before-paying: "Separate before paying in"
   )
 )
-#let scissors = image("./assets/scissors.svg", width: 1em )
+#let scissors = image("./assets/scissors.svg", width: 1em, alt: "scissors")
 #let format-currency(number, separator: " ") = {
   let precision = 2
   
@@ -318,7 +318,7 @@
             } else {
               text(weight: "bold", size: 8pt)[#lang.payable-by-name-address]
               v(-3mm)
-              image("assets/receipt_payable_by.svg", height: 20mm, width: 52mm)
+              image("assets/receipt_payable_by.svg", height: 20mm, width: 52mm, alt: "receipt_payable_by")
             }
             
             #v(14mm)
@@ -333,7 +333,7 @@
                 place(
                   dx: 9mm,
                   dy: -3mm,
-                  image("assets/receipt_amount.svg", height: 10mm, width: 30mm)
+                  image("assets/receipt_amount.svg", height: 10mm, width: 30mm, alt: "receipt_amount")
                 )
               } else {
                 text(size: 8pt)[#format-currency(amount)]
@@ -375,7 +375,7 @@
                       dir: ttb,
                       text(weight: "bold", size: 11pt)[#lang.payment-part],
                       v(8mm),
-                      qrcode(qr-data, options: ( option-1: 2 ), width: 46mm, height: 46mm),
+                      qrcode(qr-data, options: ( option-1: 2 ), width: 46mm, height: 46mm, alt: "qr_code"),
                       // Swiss cross in the center
                       place(
                         dx: 19.5mm, // 46 / 2 - 7 / 2 = 19.5
@@ -383,7 +383,7 @@
                         block(
                           width: 7mm,
                           height: 7mm,
-                          image("assets/ch_cross_7mm.svg", width: 7mm, height: 7mm),
+                          image("assets/ch_cross_7mm.svg", width: 7mm, height: 7mm, alt: "ch_cross"),
                         )
                       ),
 
@@ -403,7 +403,7 @@
                               block(
                                 width: 40mm,
                                 height: 15mm,
-                                image("assets/payment_amount.svg", height: 15mm, width: 40mm),
+                                image("assets/payment_amount.svg", height: 15mm, width: 40mm, alt: "payment_amount"),
                               )
                             )
                         } else {
@@ -462,7 +462,7 @@
                   } else {
                     text(weight: "bold", size: 8pt)[#lang.payable-by-name-address]
                     v(-3mm)
-                    image("assets/payment_payable_by.svg", height: 25mm, width: 65mm)
+                    image("assets/payment_payable_by.svg", height: 25mm, width: 65mm, alt: "payment_payable_by")
                   }
                 ]
               )
