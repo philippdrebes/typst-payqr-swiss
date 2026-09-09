@@ -94,6 +94,7 @@ The default language is the current text language (via `#set text(lang: "..."` a
 | `reference`            | Payment reference                                | Depends\*\* |
 | `additional-info`      | Additional information for the invoice recipient | No          |
 | `billing-info`         | Structured billing information                   | No          |
+| `print-billing-info`   | Print `billing-info` on the payment part         | No (true)   |
 | `language`             | Language code (de, fr, it, en)                   | No (de)     |
 | `standalone`           | Layout mode (false: floating, true: new page)    | No (false)  |
 | `font`                 | Font configuration (auto, page, or font name)    | No (auto)   |
@@ -106,6 +107,23 @@ The default language is the current text language (via `#set text(lang: "..."` a
 - When using a QR-IBAN, you must use reference type `QRR` with a valid QR reference (27 characters)
 - When using a regular IBAN, you must use either `SCOR` with a valid Creditor Reference (ISO 11649) or `NON` with no reference
 - With `NON`, pass no reference at all. `reference: none` and `reference: ""` are equivalent: the "Reference" heading is omitted from both the receipt and the payment part, as the guidelines require for an empty optional element
+
+## Additional Information
+
+The payment part prints `additional-info` (the unstructured message) and `billing-info` (structured billing information, typically Swico S1) together under the "Additional information" heading, as required by the Swiss Implementation Guidelines — every payment-relevant value in the QR code must also be readable in plain text. The receipt shows neither.
+
+Long billing strings wrap at their `/` separators so they stay inside the payment part. Note that the guidelines budget a combined maximum of 140 characters for `additional-info` and `billing-info`; the package does not enforce this.
+
+Set `print-billing-info: false` to keep `billing-info` in the QR code only:
+
+```typst
+#swiss-qr-bill(
+  // ... other parameters
+  additional-info: "Invoice 4.59.692.2026",
+  billing-info: "//S1/10/4.59.692.2026/11/260827/30/110091134/32/8.1",
+  print-billing-info: false,
+)
+```
 
 ## Layout Modes
 

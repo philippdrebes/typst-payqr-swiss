@@ -129,6 +129,33 @@
   result
 }
 
+// A Swico billing string has no spaces, so Typst cannot break it and long values
+// run out of the payment part. Zero-width spaces add break opportunities at the
+// "/" separators; the QR payload keeps the original string.
+#let allow-breaks-at-separators(str) = {
+  if str == none {
+    return
+  }
+
+  let chars = str.clusters()
+  let result = ""
+
+  for i in range(chars.len()) {
+    let char = chars.at(i)
+    let prev = if i > 0 { chars.at(i - 1) } else { "" }
+    let next = chars.at(i + 1, default: "")
+
+    // Keep the leading "//" of a Swico string and any other slash pair together
+    if char == "/" and prev != "" and prev != "/" and next != "/" {
+      result += "\u{200B}"
+    }
+
+    result += char
+  }
+
+  result
+}
+
 #let format-iban(iban) = {
   // Fake the ref type just for the right formatting, could be done nicer, I know
   format-reference(iban, "NON")
@@ -155,6 +182,7 @@
   reference: none,
   additional-info: none,
   billing-info: none,
+  print-billing-info: true,  // print billing-info under "Additional information" on the payment part
   language: auto,  // auto (use text.lang with fallback to en), de, fr, it, or en
   standalone: false,  // false: floating element (default), true: force new page
   font: "auto"  // "auto": use spec-compliant fonts, "page": inherit from page, or specify font name
@@ -176,6 +204,8 @@
 
   let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.de)
 
+  let additional-info-shown = additional-info != none and additional-info != ""
+  let billing-info-shown = print-billing-info and billing-info != none and billing-info != ""
   let reference-shown = reference != none and remove-whitespaces(reference) != ""
 
   let compliant-fonts = (
@@ -447,10 +477,22 @@
                     text(size: 9pt)[#format-reference(reference, reference-type)]
                   }
                    
-                  #if additional-info != none {
+                  #if additional-info-shown or billing-info-shown {
                     text(weight: "bold", size: 8pt)[#lang.additional-information]
-                    linebreak()
-                    text(size: 10pt)[#additional-info]
+                    if additional-info-shown {
+                      linebreak()
+                      text(size: 10pt)[#additional-info]
+                    }
+                    if billing-info-shown {
+                      linebreak()
+                      // The surrounding column runs past the right page edge, so the
+                      // width is pinned to the information section of the spec (87mm)
+                      // less the 5mm margin the payment part keeps on the right
+                      box(
+                        width: 82mm,
+                        text(size: 10pt)[#allow-breaks-at-separators(billing-info)]
+                      )
+                    }
                   }
                   
                   #if debtor-name != "" {

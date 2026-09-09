@@ -97,6 +97,7 @@
       debtor-country: "CH",
       reference-type: "SCOR",
       reference: "RF18539007547034",
+      additional-info: "Order from 15.10.2020",
       billing-info: "//S1/10/10201409/11/190512/20/1400.000-53/30/106017086/31/180508/32/7.7/40/2:10;0:30",
       language: "en"
     )

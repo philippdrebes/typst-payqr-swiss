@@ -2,8 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- New `print-billing-info` parameter (default `true`) to control whether `billing-info` is printed on the payment part
+
 ### Fixed
 
+- **`billing-info` is now printed on the payment part.** It was encoded in the QR code but never rendered, although the Swiss Implementation Guidelines require every payment-relevant value in the QR code to be readable in plain text. It appears under the "Additional information" heading below `additional-info`, matching the reference images in `tests/muster`. Set `print-billing-info: false` to keep the previous output
+- Long billing strings wrap at their `/` separators instead of running out of the payment part
 - **The receipt and the payment part now lay out their text in the sections the specification defines.** The receipt used the full 62mm of the receipt as its text width, and the payment part was a 148mm block placed at 68mm, so a long address crossed the perforation into the payment part and the payment part's information column ran 6mm past the right edge of the page. The receipt now uses the 52mm information section, and the payment part the 51mm payment part section plus the 87mm information section, starting at 67mm
 - Addresses are no longer justified when the surrounding document sets `par(justify: true)`, which stretched the spaces of every address line that wraps
 - An empty or whitespace-only `reference` no longer prints a bare "Reference" heading on the receipt and the payment part. The guidelines require the heading of an empty optional element to be omitted, so such a reference is now treated like `reference: none`
