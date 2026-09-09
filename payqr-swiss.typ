@@ -485,11 +485,8 @@
                     }
                     if billing-info-shown {
                       linebreak()
-                      // The surrounding column runs past the right page edge, so the
-                      // width is pinned to the information section of the spec (87mm)
-                      // less the 5mm margin the payment part keeps on the right
                       box(
-                        width: 82mm,
+                        width: 100%,
                         text(size: 10pt)[#allow-breaks-at-separators(billing-info)]
                       )
                     }
