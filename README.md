@@ -16,13 +16,13 @@ This package provides a simple way to generate Swiss QR bills in [Typst](https:/
 Add this package to your Typst project:
 
 ```
-#import "@preview/payqr-swiss:0.5.0": swiss-qr-bill
+#import "@preview/payqr-swiss:0.6.0": swiss-qr-bill
 ```
 
 ## Usage
 
 ```typst
-#import "@preview/payqr-swiss:0.5.0": swiss-qr-bill
+#import "@preview/payqr-swiss:0.6.0": swiss-qr-bill
 
 #swiss-qr-bill(
   account: "CH4431999123000889012",
@@ -95,7 +95,7 @@ The default language is the current text language (via `#set text(lang: "..."` a
 | `additional-info`      | Additional information for the invoice recipient | No          |
 | `billing-info`         | Structured billing information                   | No          |
 | `print-billing-info`   | Print `billing-info` on the payment part         | No (true)   |
-| `language`             | Language code (de, fr, it, en)                   | No (de)     |
+| `language`             | Language code (auto, de, fr, it, en)             | No (auto)   |
 | `standalone`           | Layout mode (false: floating, true: new page)    | No (false)  |
 | `font`                 | Font configuration (auto, page, or font name)    | No (auto)   |
 
@@ -110,7 +110,9 @@ The default language is the current text language (via `#set text(lang: "..."` a
 
 ## Additional Information
 
-The payment part prints `additional-info` (the unstructured message) and `billing-info` (structured billing information, typically Swico S1) together under the "Additional information" heading, as required by the Swiss Implementation Guidelines — every payment-relevant value in the QR code must also be readable in plain text. The receipt shows neither.
+The payment part prints `additional-info` (the unstructured message) and, by default, `billing-info` (structured billing information, typically Swico S1) together under the "Additional information" heading. The receipt shows neither.
+
+Since version 2.3 of the Swiss Implementation Guidelines, the "Billing information" field may be printed on the payment part but no longer has to be (see the revision history entry for chapter 4.3.3, in force since 1 January 2024); printing it is mandatory only when the field contains personal data. The package cannot know whether a given payload carries personal data, so it prints on the safe side and defaults `print-billing-info` to `true`.
 
 Long billing strings wrap at their `/` separators so they stay inside the payment part. Note that the guidelines budget a combined maximum of 140 characters for `additional-info` and `billing-info`; the package does not enforce this.
 
