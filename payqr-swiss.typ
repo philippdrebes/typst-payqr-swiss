@@ -424,28 +424,40 @@
                       ),
 
                       v(5mm),
-                      grid(
-                        // Width is 46mm + 5mm margin on the right that can be used.
-                        // So I give the currency half the official width and the amount the rest with margin.
-                        columns: (23mm, 28mm),
-                        rows: 3mm,
-                        text(weight: "bold", size: 8pt)[#lang.currency],
-                        text(weight: "bold", size: 8pt)[#lang.amount],
-                        text(size: 10pt)[#currency],
-
-                        if amount == 0 {
-                            place(
-                              dx: -9mm,
-                              block(
-                                width: 40mm,
-                                height: 15mm,
+                      if amount == 0 {
+                        grid(
+                          // The blank field is 40mm wide and ends flush with the
+                          // 51mm payment part section, which leaves 11mm for the
+                          // currency. A currency heading wider than that pushes
+                          // the amount heading right instead of overlapping it.
+                          columns: 2,
+                          rows: 3mm,
+                          pad(right: 1mm, text(weight: "bold", size: 8pt)[#lang.currency]),
+                          text(weight: "bold", size: 8pt)[#lang.amount],
+                          block(
+                            width: 11mm,
+                            {
+                              text(size: 10pt)[#currency]
+                              place(
+                                top + left,
+                                dx: 11mm,
                                 image("assets/payment_amount.svg", height: 15mm, width: 40mm, alt: "payment_amount"),
                               )
-                            )
-                        } else {
-                          text(size: 10pt)[#format-currency(amount)]
-                        }
-                      )
+                            }
+                          ),
+                        )
+                      } else {
+                        grid(
+                          // Width is 46mm + 5mm margin on the right that can be used.
+                          // So I give the currency half the official width and the amount the rest with margin.
+                          columns: (23mm, 28mm),
+                          rows: 3mm,
+                          text(weight: "bold", size: 8pt)[#lang.currency],
+                          text(weight: "bold", size: 8pt)[#lang.amount],
+                          text(size: 10pt)[#currency],
+                          text(size: 10pt)[#format-currency(amount)],
+                        )
+                      }
                     )
                   ]
                 )
