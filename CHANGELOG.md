@@ -12,6 +12,7 @@
 - Long billing strings wrap at their `/` separators instead of running out of the payment part
 - **The receipt and the payment part now lay out their text in the sections the specification defines.** The receipt used the full 62mm of the receipt as its text width, and the payment part was a 148mm block placed at 68mm, so a long address crossed the perforation into the payment part and the payment part's information column ran 6mm past the right edge of the page. The receipt now uses the 52mm information section, and the payment part the 51mm payment part section plus the 87mm information section, starting at 67mm
 - Addresses are no longer justified when the surrounding document sets `par(justify: true)`, which stretched the spaces of every address line that wraps
+- **The blank amount field on the payment part no longer extends into the information section.** On a bill without an amount, the 40 × 15mm field ran from 81mm to 121mm and collided with the "Payable by (name/address)" field. It now ends flush with the payment part section at 118mm, leaving 11mm for the currency as in the SIX examples. A currency heading wider than that ("Currency", "Währung", "Monnaie") moves the "Amount" heading right instead of overlapping it
 - An empty or whitespace-only `reference` no longer prints a bare "Reference" heading on the receipt and the payment part. The guidelines require the heading of an empty optional element to be omitted, so such a reference is now treated like `reference: none`
 
 ## v0.5.0 (2026-08-17)
