@@ -183,7 +183,7 @@
   additional-info: none,
   billing-info: none,
   print-billing-info: true,  // print billing-info under "Additional information" on the payment part
-  language: auto,  // auto (use text.lang with fallback to en), de, fr, it, or en
+  language: auto,  // auto (use text.lang with fallback to de), de, fr, it, or en
   standalone: false,  // false: floating element (default), true: force new page
   font: "auto"  // "auto": use spec-compliant fonts, "page": inherit from page, or specify font name
 ) = context {
@@ -378,7 +378,6 @@
             
             #place(
               right,
-              dx: -8mm,
               text(weight: "bold", size: 6pt)[#lang.acceptance-point]
             )
           ]
