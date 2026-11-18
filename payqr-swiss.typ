@@ -52,6 +52,19 @@
     amount: "Amount",
     acceptance-point: "Acceptance point",
     separate-before-paying: "Separate before paying in"
+  ),
+  rm: (
+    payment-part: "Part da pajament",
+    receipt: "Quittanza",
+    account-payable-to: "Conto / Da pajar a",
+    reference: "Referenza",
+    additional-information: "Infurmaziuns supplementaras",
+    payable-by: "Da pajar da",
+    payable-by-name-address: "Da pajar da (num/adressa)",
+    currency: "Valuta",
+    amount: "Import",
+    acceptance-point: "Post da recepziun",
+    separate-before-paying: "Da distatgar avant che pajar"
   )
 )
 #let scissors = image("./assets/scissors.svg", width: 1em, alt: "scissors")
@@ -183,7 +196,8 @@
   additional-info: none,
   billing-info: none,
   print-billing-info: true,  // print billing-info under "Additional information" on the payment part
-  language: auto,  // auto (use text.lang with fallback to de), de, fr, it, or en
+  allow-eur-qr-reference: false,  // true: accept a QR reference (QRR) in EUR as Version 2.3 did; transitional, valid until November 2027
+  language: auto,  // auto (use text.lang with fallback to de), de, fr, it, rm, or en
   standalone: false,  // false: floating element (default), true: force new page
   font: "auto"  // "auto": use spec-compliant fonts, "page": inherit from page, or specify font name
 ) = context {
@@ -200,6 +214,12 @@
   
   if currency != "CHF" and currency != "EUR" {
     panic("Currency must be either CHF or EUR")
+  }
+
+  // Since Version 2.4 of the Swiss Implementation Guidelines (chapters 2.10, 2.12.1, 4.2.2), the QR-IBAN and
+  // the QR reference may only be used for invoices in CHF. Version 2.3 remains valid until November 2027.
+  if currency == "EUR" and reference-type == "QRR" and not allow-eur-qr-reference {
+    panic("A QR reference (QRR) can only be used for invoices in CHF (Swiss Implementation Guidelines, Version 2.4). For EUR, use a regular IBAN with reference-type \"SCOR\" or \"NON\". To keep the Version 2.3 behavior until November 2027, pass allow-eur-qr-reference: true.")
   }
 
   let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.de)

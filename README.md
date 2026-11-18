@@ -1,6 +1,6 @@
 # Swiss QR Bill Generator for Typst
 
-This package provides a simple way to generate Swiss QR bills in [Typst](https://typst.app/). The implementation follows the [Swiss Implementation Guidelines for the QR-bill (Version 2.3)](https://www.six-group.com/en/products-services/banking-services/payment-standardization/standards/qr-bill.html).
+This package provides a simple way to generate Swiss QR bills in [Typst](https://typst.app/). The implementation follows the [Swiss Implementation Guidelines for the QR-bill (Version 2.4)](https://www.six-group.com/en/products-services/banking-services/payment-standardization/standards/qr-bill.html).
 
 ## Features
 
@@ -57,13 +57,14 @@ This package supports all Swiss national languages incl. English as specified in
 - German (de)
 - French (fr)
 - Italian (it)
+- Romansh (rm)
 - English (en)
 
 You can specify your preferred language using the `language` parameter:
 
 ```typst
 #swiss-qr-bill(
-  language: "fr",  // Options: auto, "de", "fr", "it", "en"
+  language: "fr",  // Options: auto, "de", "fr", "it", "rm", "en"
   account: "CH4431999123000889012",
   // ... other parameters
 )
@@ -95,7 +96,8 @@ The default language is the current text language (via `#set text(lang: "..."` a
 | `additional-info`      | Additional information for the invoice recipient | No          |
 | `billing-info`         | Structured billing information                   | No          |
 | `print-billing-info`   | Print `billing-info` on the payment part         | No (true)   |
-| `language`             | Language code (auto, de, fr, it, en)             | No (auto)   |
+| `allow-eur-qr-reference` | Accept `QRR` in EUR (Version 2.3, until Nov 2027) | No (false) |
+| `language`             | Language code (auto, de, fr, it, rm, en)         | No (auto)   |
 | `standalone`           | Layout mode (false: floating, true: new page)    | No (false)  |
 | `font`                 | Font configuration (auto, page, or font name)    | No (auto)   |
 
@@ -106,7 +108,27 @@ The default language is the current text language (via `#set text(lang: "..."` a
 
 - When using a QR-IBAN, you must use reference type `QRR` with a valid QR reference (27 characters)
 - When using a regular IBAN, you must use either `SCOR` with a valid Creditor Reference (ISO 11649) or `NON` with no reference
+- `QRR` (and therefore a QR-IBAN) is only allowed for invoices in `CHF`. For `EUR`, use a regular IBAN with `SCOR` or `NON` (see [Invoices in EUR](#invoices-in-eur))
 - With `NON`, pass no reference at all. `reference: none` and `reference: ""` are equivalent: the "Reference" heading is omitted from both the receipt and the payment part, as the guidelines require for an empty optional element
+
+### Invoices in EUR
+
+Version 2.4 of the Swiss Implementation Guidelines (in force since 14 November 2026) restricts the QR-IBAN and the QR reference to invoices in CHF, following the discontinuation of euroSIC: QR-bills in EUR will be processed as SEPA Credit Transfers after November 2027 at the latest. For `currency: "EUR"`, only a regular IBAN with `SCOR` or with `NON` is possible, and the package stops with an error when `reference-type` is `QRR`.
+
+Version 2.3 remains valid until November 2027. During this transition, pass `allow-eur-qr-reference: true` to generate a QR-bill in EUR with a QR reference as before. This option is transitional and will be removed in a release after November 2027; a bill generated with it may be rejected if it is paid after that date.
+
+```typst
+#swiss-qr-bill(
+  // ... other parameters
+  account: "CH4431999123000889012",  // QR-IBAN
+  currency: "EUR",
+  reference-type: "QRR",
+  reference: "210000000003139471430009017",
+  allow-eur-qr-reference: true,  // Version 2.3 behavior, until November 2027
+)
+```
+
+For payments in EUR, the guidelines also note that the transfer to the creditor's bank is not guaranteed for the unstructured message (`additional-info`) when it is combined with a Creditor Reference, nor for the debtor's address.
 
 ## Additional Information
 

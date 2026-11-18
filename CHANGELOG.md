@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **Romansh (`rm`)** as a bill language, with the headings from Version 2.4 of the Swiss Implementation Guidelines (chapter 3.2, Annex C). `language: auto` picks it up from `#set text(lang: "rm")`
+- New `allow-eur-qr-reference` parameter (default `false`) to keep generating QR-bills in EUR with a QR reference during the transition to Version 2.4. Version 2.3 remains valid until November 2027; the parameter will be removed in a release after that date
+
+### Changed
+
+- **A QR reference (`QRR`) in EUR is now rejected.** Version 2.4 of the Swiss Implementation Guidelines, in force since 14 November 2026, restricts the QR-IBAN and the QR reference to invoices in CHF (chapters 2.10, 2.12.1, 4.2.2), following the discontinuation of euroSIC. For EUR, only a regular IBAN with `SCOR` or `NON` is possible. Pass `allow-eur-qr-reference: true` to keep the previous behavior until November 2027
+- The documentation now refers to Version 2.4 of the Swiss Implementation Guidelines. The QR code header stays `0200`: the guidelines only allow this version designation in master version 02 (chapter 4.2.2)
+
 ## v0.6.0 (2026-10-13)
 
 ### Added
