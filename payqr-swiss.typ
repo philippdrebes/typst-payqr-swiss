@@ -205,7 +205,8 @@
   let lang = languages.at(if language == auto {text.lang} else {language}, default: languages.de)
 
   let additional-info-shown = additional-info != none and additional-info != ""
-  let billing-info-shown = print-billing-info and billing-info != none and billing-info != ""
+  let has-billing-info = billing-info != none and billing-info != ""
+  let billing-info-shown = print-billing-info and has-billing-info
   let reference-shown = reference != none and remove-whitespaces(reference) != ""
 
   let compliant-fonts = (
@@ -258,7 +259,10 @@
   qr-data += reference-type + "\n" + remove-whitespaces(reference) + "\n"
   
   // Additional information, Trailer, and Billing information
-  qr-data += additional-info + "\n" + "EPD\n" + billing-info
+  qr-data += additional-info + "\nEPD"
+  if has-billing-info {
+    qr-data += "\n" + billing-info
+  }
   
   let qr-bill-content = [
     #box(
